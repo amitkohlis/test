@@ -11,3 +11,148 @@ public static class ServiceRegistrationExtension
             appServices.ForEach(svc => svc.RegisterAppServices(services, configuration));
         }
     }
+
+
+================================================================================================================================
+
+internal class RegisterCors : IServiceRegistration
+    {
+        public void RegisterAppServices(IServiceCollection services, IConfiguration config)
+        {
+            //Configure CORS to allow any origin, header and method. 
+            //Change the CORS policy based on your requirements.
+            //More info see: https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-3.0
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
+                });
+            });
+        }
+    }
+    
+ ====================================================================================================================================
+ internal class RegisterContractMappings : IServiceRegistration
+ {
+        public void RegisterAppServices(IServiceCollection services, IConfiguration config)
+        {
+            //Register Interface Mappings for Repositories
+            services.AddTransient<IPersonManager, PersonManager>();
+        }
+ }
+ ========================================================================================================================================
+  internal class RegisterHealthChecks : IServiceRegistration
+    {
+        public void RegisterAppServices(IServiceCollection services, IConfiguration config)
+        {
+            //Register HealthChecks and UI
+            services.AddHealthChecks()
+                    .AddCheck("Google Ping", new PingHealthCheck("www.google.com", 100))
+                    .AddCheck("Bing Ping", new PingHealthCheck("www.bing.com", 100));
+             
+                    //.AddUrlGroup(new Uri(config["ApiResourceBaseUrls:AuthServer"]),
+                    //            name: "Auth Server",
+                    //            failureStatus: HealthStatus.Degraded)
+                    
+                    //.AddUrlGroup(new Uri(config["ApiResourceBaseUrls:SampleApi"]),
+                    //            name: "External Api",
+                    //            failureStatus: HealthStatus.Degraded);
+
+                    //.AddNpgSql(config["ConnectionStrings:PostgreSQLConnectionString"],
+                    //            name: "PostgreSQL",
+                    //            failureStatus: HealthStatus.Unhealthy)
+                    //.AddSqlServer(
+                    //            connectionString: config["ConnectionStrings:SQLDBConnectionString"],
+                    //            healthQuery: "SELECT 1;",
+                    //            name: "SQL",
+                    //            failureStatus: HealthStatus.Degraded,
+                    //            tags: new string[] { "db", "sql", "sqlserver" }
+
+
+            //            );
+
+            services.AddHealthChecksUI();
+        }
+    }
+ ============================================================================================================================================
+   internal class RegisterModelValidators: IServiceRegistration
+    {
+        public void RegisterAppServices(IServiceCollection services, IConfiguration configuration)
+        {
+            //Register DTO Validators
+            services.AddTransient<IValidator<CreatePersonRequest>, CreatePersonRequestValidator>();
+            services.AddTransient<IValidator<UpdatePersonRequest>, UpdatePersonRequestValidator>();
+
+            //Disable Automatic Model State Validation built-in to ASP.NET Core
+            services.Configure<ApiBehaviorOptions>(opt => { opt.SuppressModelStateInvalidFilter = true; });
+        }
+    }
+ ==========================================================================================================================================
+ internal class RegisterSwagger: IServiceRegistration
+    {
+        public void RegisterAppServices(IServiceCollection services, IConfiguration config)
+        {
+            //Register Swagger
+            
+        }
+    }
+ ============================================================================================================================
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+    
+    
